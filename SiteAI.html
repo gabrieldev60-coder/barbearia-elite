@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SiteAI | Crie sites profissionais com IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070b;--bg2:#0e0e15;--card:#13131c;--line:#24243200;--bd:#262636;--ink:#f1f1f6;--mut:#9a9ab0;--vi:#8b5cf6;--bl:#3b82f6;--grad:linear-gradient(120deg,#8b5cf6,#3b82f6);--d:"Sora",system-ui,sans-serif;--b:"Manrope",system-ui,sans-serif;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px));height:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--b);-webkit-font-smoothing:antialiased;background-image:radial-gradient(60rem 30rem at 15% -5%,rgba(139,92,246,.18),transparent),radial-gradient(50rem 30rem at 95% 5%,rgba(59,130,246,.16),transparent);background-repeat:no-repeat}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+a{color:inherit}img,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--bl);outline-offset:3px}
+.wrap{width:min(1140px,100% - 2.5rem);margin-inline:auto}
+section{padding:clamp(3.5rem,8vw,6rem) 0}
+h1,h2,h3{font-family:var(--d);line-height:1.12;margin:0}
+h2{font-size:clamp(1.8rem,4.5vw,2.8rem);margin-bottom:.7rem}
+.lead{color:var(--mut);max-width:60ch;margin:0 0 2rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.4rem;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--ink);font:700 .95rem var(--b);cursor:pointer;text-decoration:none;transition:transform .25s,box-shadow .25s,border-color .25s}
+.btn:hover{transform:translateY(-2px);border-color:var(--vi)}
+.btn.pri{background:var(--grad);border:0;color:#fff}
+.btn.pri:hover{box-shadow:0 10px 30px rgba(99,102,241,.45)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(7,7,11,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+.bar{display:flex;align-items:center;gap:1.5rem;height:68px}
+.logo{font:800 1.4rem var(--d);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo i{width:28px;height:28px;border-radius:8px;background:var(--grad);display:inline-block}
+.logo em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{margin-left:auto}nav ul{display:flex;gap:1.4rem;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;color:var(--mut);font-weight:500;font-size:.93rem;transition:color .2s}nav a:hover{color:var(--ink)}
+.auth{display:flex;gap:.6rem}.auth .btn{padding:.6rem 1rem}
+.menu{display:none;margin-left:auto;width:44px;height:44px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--ink);font-size:1.2rem;cursor:pointer}
+@media(max-width:960px){.menu{display:block}.auth{display:none}nav{position:absolute;left:0;right:0;top:100%;background:var(--bg2);border-bottom:1px solid var(--bd);display:none;margin:0}nav.open{display:block}nav ul{flex-direction:column;gap:0;padding:.5rem 1.25rem 1rem}nav a{display:block;padding:.75rem 0;font-size:1.05rem}}
+.hero{text-align:center;padding-top:clamp(3rem,8vw,6rem)}
+.hero h1{font-size:clamp(2.3rem,6.5vw,4.6rem);max-width:16ch;margin:0 auto 1.2rem}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{margin:0 auto 2rem}
+.prompt{max-width:760px;margin:0 auto;padding:.9rem;border:1px solid var(--bd);border-radius:18px;background:var(--card);display:grid;gap:.8rem;text-align:left;box-shadow:0 0 0 1px rgba(139,92,246,.15),0 30px 80px rgba(59,130,246,.12)}
+.prompt textarea{background:transparent;border:0;color:var(--ink);font:inherit;resize:none;min-height:84px;padding:.4rem;outline:none}
+.hero>.wrap>*{animation:up .8s cubic-bezier(.2,.7,.2,1) both}.hero .lead{animation-delay:.1s}.hero .prompt{animation-delay:.2s}
+@keyframes up{from{opacity:0;transform:translateY(22px)}}
+.demos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:3.5rem}
+.mock{border:1px solid var(--bd);border-radius:16px;background:var(--card);overflow:hidden;text-align:left;transition:transform .3s,border-color .3s}
+.mock:hover{transform:translateY(-6px);border-color:var(--vi)}
+.mock .tb{display:flex;gap:5px;padding:.6rem .8rem;border-bottom:1px solid var(--bd)}.tb i{width:9px;height:9px;border-radius:50%;background:#33334a}
+.mock .scr{padding:1rem;display:grid;gap:.5rem;height:170px;align-content:start}
+.scr b{display:block;height:46px;border-radius:8px;background:var(--c)}.scr s{display:block;height:8px;border-radius:4px;background:#2a2a3d;width:70%}.scr s+s{width:45%}
+.scr div{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem}.scr div u{height:34px;border-radius:6px;background:#1d1d2c}
+.mock p{margin:0;padding:.7rem 1rem;border-top:1px solid var(--bd);font-size:.88rem;color:var(--mut)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem}
+.card{border:1px solid var(--bd);border-radius:18px;background:var(--card);padding:1.6rem;transition:transform .3s,border-color .3s}
+.card:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.6)}
+.card h3{font-size:1.15rem;margin-bottom:.5rem}.card p{margin:0;color:var(--mut);font-size:.95rem}
+.num{width:38px;height:38px;border-radius:10px;background:var(--grad);display:grid;place-items:center;font:800 1rem var(--d);margin-bottom:1rem}
+.tag{display:inline-block;font-size:.78rem;border:1px dashed var(--bd);color:var(--mut);border-radius:99px;padding:.15rem .7rem;margin-bottom:.8rem}
+.studio{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1.5rem;align-items:start}
+@media(max-width:900px){.studio{grid-template-columns:1fr}}
+form.card{display:grid;gap:.9rem}
+label{display:grid;gap:.3rem;font-size:.85rem;font-weight:700;color:#cfcfe0}
+input,select,textarea.f{background:var(--bg2);border:1px solid var(--bd);color:var(--ink);border-radius:10px;padding:.7rem .8rem;font:inherit;width:100%}
+input:focus,select:focus,textarea.f:focus{outline:none;border-color:var(--vi)}
+input[type=color]{padding:.2rem;height:44px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.pv{border:1px solid var(--bd);border-radius:18px;background:var(--card);overflow:hidden;position:sticky;top:calc(80px + env(safe-area-inset-top,0px))}
+.pvh{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-bottom:1px solid var(--bd)}
+.pvh .btn{padding:.5rem .9rem;font-size:.85rem}
+.frame{width:100%;height:min(70vh,640px);border:0;background:#fff;display:block}
+.frame.m{width:390px;max-width:100%;margin:0 auto;border-inline:1px solid var(--bd)}
+.seg{display:flex;gap:.3rem}.seg .btn.on{border-color:var(--vi);background:rgba(139,92,246,.2)}
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.tg .mock p{display:flex;justify-content:space-between;align-items:center;gap:.5rem;color:var(--ink);font-weight:700}
+.tg .mock .btn{padding:.4rem .8rem;font-size:.8rem}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}.fg .w2{grid-column:1/-1}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin:1.2rem 0}
+.stats .card{padding:1rem}.stats b{display:block;font:800 1.5rem var(--d)}.stats span{color:var(--mut);font-size:.85rem}
+.tools{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}.tools input,.tools select{width:auto;flex:1 1 170px}
+.kb{display:grid;grid-template-columns:repeat(5,minmax(240px,1fr));gap:1rem;overflow-x:auto;padding-bottom:.5rem}
+.col{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:.8rem;display:grid;gap:.7rem;align-content:start;min-height:120px}
+.col h4{margin:0;font:700 .9rem var(--d);color:var(--mut)}
+.opp{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:.9rem;font-size:.9rem;display:grid;gap:.4rem}
+.opp small{color:var(--mut)}.opp .acts{display:flex;flex-wrap:wrap;gap:.35rem}.opp .btn{padding:.35rem .6rem;font-size:.78rem}.opp select{padding:.4rem;font-size:.82rem}
+.empty{display:grid;place-items:center;text-align:center;min-height:360px;color:var(--mut);padding:2rem}
+.st{font-size:.88rem;color:var(--mut)}
+.plist{display:grid;gap:.8rem}
+.prow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem;border:1px solid var(--bd);background:var(--card);border-radius:14px;padding:1rem 1.2rem}
+dialog{border:1px solid var(--bd);border-radius:18px;background:var(--card);color:var(--ink);max-width:min(420px,92vw);padding:1.6rem}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+footer{border-top:1px solid var(--bd);padding:2rem 0;color:var(--mut);font-size:.9rem;text-align:center}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="logo" href="#inicio"><i></i>Site<em>AI</em></a>
+  <button class="menu" id="mb" aria-label="Abrir menu" aria-expanded="false">☰</button>
+  <nav id="nav" aria-label="Principal"><ul>
+    <li><a href="#inicio">Início</a></li><li><a href="#criar">Criar site</a></li><li><a href="#clientes">Encontrar clientes</a></li><li><a href="#projetos">Meus projetos</a></li><li><a href="#planos">Planos</a></li>
+  </ul></nav>
+  <div class="auth"><button class="btn" data-auth>Entrar</button><button class="btn pri" data-auth>Cadastrar</button></div>
+</div></header>
+
+<main>
+<section class="hero" id="inicio"><div class="wrap">
+  <h1>Crie sites profissionais com o <span class="grad">poder da IA</span></h1>
+  <p class="lead">Transforme suas ideias em sites incríveis e encontre oportunidades para vender seus serviços.</p>
+  <div class="prompt">
+    <textarea id="idea" aria-label="Descreva o site que você deseja criar" placeholder="Descreva o site que você deseja criar. Ex.: site para uma clínica de fisioterapia com agendamento pelo WhatsApp"></textarea>
+    <button class="btn pri" id="go">Criar meu site com IA</button>
+  </div>
+  <div class="demos" aria-label="Exemplos ilustrativos">
+    <div class="mock" style="--c:linear-gradient(120deg,#c9a227,#3a2f0b)"><div class="tb"><i></i><i></i><i></i></div><div class="scr"><b></b><s></s><s></s><div><u></u><u></u><u></u></div></div><p>Exemplo: barbearia</p></div>
+    <div class="mock" style="--c:linear-gradient(120deg,#12907e,#0a3a35)"><div class="tb"><i></i><i></i><i></i></div><div class="scr"><b></b><s></s><s></s><div><u></u><u></u><u></u></div></div><p>Exemplo: clínica</p></div>
+    <div class="mock" style="--c:linear-gradient(120deg,#8b5cf6,#3b82f6)"><div class="tb"><i></i><i></i><i></i></div><div class="scr"><b></b><s></s><s></s><div><u></u><u></u><u></u></div></div><p>Exemplo: consultoria</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap rv">
+  <h2>Como funciona</h2><p class="lead">Três etapas, do briefing à prévia.</p>
+  <div class="cards">
+    <div class="card"><div class="num">1</div><h3>Conte sobre o negócio</h3><p>Preencha nome, segmento, serviços, contatos, cores e estilo.</p></div>
+    <div class="card"><div class="num">2</div><h3>A IA escreve e monta</h3><p>Ela cria os textos e a estrutura: menu, banner, apresentação, serviços e contato.</p></div>
+    <div class="card"><div class="num">3</div><h3>Revise e leve embora</h3><p>Veja a prévia, ajuste os dados, salve o projeto e baixe o arquivo para hospedar.</p></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap rv">
+  <h2>Recursos e benefícios</h2><p class="lead">Feito para freelancers e empreendedores que precisam entregar rápido.</p>
+  <div class="cards">
+    <div class="card"><h3>Textos prontos em português</h3><p>Título, descrição e serviços gerados a partir dos dados da empresa.</p></div>
+    <div class="card"><h3>Responsivo</h3><p>O site gerado se adapta a celular, tablet e computador.</p></div>
+    <div class="card"><h3>Botão de WhatsApp</h3><p>Link configurável com o número informado no formulário.</p></div>
+    <div class="card"><h3>Identidade visual</h3><p>Escolha cor principal, tema claro ou escuro e estilo.</p></div>
+    <div class="card"><h3>Arquivo único</h3><p>Baixe um HTML completo, pronto para hospedagem gratuita.</p></div>
+    <div class="card"><h3>Projetos salvos</h3><p>Guarde versões neste navegador e reabra quando quiser.</p></div>
+  </div>
+</div></section>
+
+<section id="modelos"><div class="wrap rv"><h2>Modelos prontos</h2><p class="lead">Escolha um ponto de partida: o modelo preenche o briefing e a IA escreve os textos. “Loja virtual” é uma vitrine com contato por WhatsApp, sem carrinho nem pagamento.</p><div class="tg" id="tpl"></div></div></section>
+
+<section id="criar"><div class="wrap rv">
+  <h2>Criar site</h2><p class="lead">Preencha o briefing e gere uma prévia. Só o nome da empresa é obrigatório.</p>
+  <div class="studio">
+    <form class="card" id="f" autocomplete="off" onsubmit="return false">
+      <label>Nome da empresa<input id="nome" placeholder="Ex.: Studio Aurora"></label>
+      <label>Segmento do negócio<input id="seg" placeholder="Ex.: salão de beleza"></label>
+      <label>Descrição da empresa<textarea class="f" id="desc" rows="3" placeholder="O que a empresa faz e para quem"></textarea></label>
+      <div class="two">
+        <label>Cor principal<input type="color" id="cor" value="#8b5cf6"></label>
+        <label>Tema<select id="tema"><option value="dark">Escuro</option><option value="light">Claro</option></select></label>
+      </div>
+      <label>Estilo visual<select id="estilo"><option>Moderno</option><option>Elegante</option><option>Minimalista</option><option>Ousado</option></select></label>
+      <label>Serviços oferecidos (um por linha)<textarea class="f" id="serv" rows="4" placeholder="Corte&#10;Coloração&#10;Manicure"></textarea></label>
+      <div class="two">
+        <label>Telefone<input id="tel" inputmode="tel" placeholder="(21) 3000-0000"></label>
+        <label>WhatsApp<input id="wa" inputmode="tel" placeholder="(21) 99999-9999"></label>
+      </div>
+      <label>Endereço<input id="end" placeholder="Rua, número, cidade"></label>
+      <label>Redes sociais<input id="redes" placeholder="@perfil no Instagram, Facebook..."></label>
+      <label>Objetivo do site<select id="obj"><option>Receber contatos pelo WhatsApp</option><option>Apresentar a empresa</option><option>Divulgar serviços e preços</option><option>Mostrar portfólio</option></select></label>
+      <button class="btn pri" id="gen" type="button">Gerar site com IA</button>
+      <span class="st" id="st" role="status"></span>
+    </form>
+    <div class="pv">
+      <div class="pvh"><b>Prévia</b><div class="seg"><button type="button" class="btn on" id="vd">Desktop</button><button type="button" class="btn" id="vm">Mobile</button></div><div style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn" id="save" disabled>Salvar projeto</button><button class="btn" id="dl" disabled>Baixar HTML</button></div></div>
+      <div class="empty" id="empty"><div><b style="color:var(--ink)">A prévia aparece aqui</b><br>Preencha o briefing e clique em “Gerar site com IA”.</div></div>
+      <iframe class="frame" id="fr" title="Prévia do site" hidden></iframe>
+    </div>
+  </div>
+</div></section>
+
+<section id="editor" hidden style="padding-top:0"><div class="wrap"><div class="card fg">
+  <b class="w2">Editar sem programar (a prévia atualiza na hora)</b>
+  <label>Título do banner<input id="e1"></label><label>Texto do botão<input id="e3"></label>
+  <label class="w2">Subtítulo<textarea class="f" id="e2" rows="2"></textarea></label>
+  <label class="w2">Apresentação da empresa<textarea class="f" id="e4" rows="3"></textarea></label>
+  <label>Cor principal<input type="color" id="e5"></label>
+  <label>Estilo<select id="e6"><option>Moderno</option><option>Elegante</option><option>Minimalista</option><option>Ousado</option></select></label>
+  <label class="w2">Perguntas frequentes (uma por linha: Pergunta | Resposta)<textarea class="f" id="e7" rows="3"></textarea></label>
+  <label class="w2">Depoimentos reais e autorizados (Texto | Nome). Vazio = seção oculta<textarea class="f" id="e8" rows="3"></textarea></label>
+  <label>Imagens da galeria (até 6)<input type="file" id="e9" accept="image/*" multiple></label>
+  <div style="display:flex;align-items:end"><button type="button" class="btn" id="e10">Limpar galeria</button></div>
+  <span class="st w2">Serviços, endereço e contatos são editados no formulário acima: ajuste e gere de novo.</span>
+</div></div></section>
+
+<section id="clientes"><div class="wrap rv">
+  <h2>Encontrar clientes</h2><p class="lead">Organize a prospecção de empresas que podem contratar um site.</p>
+  <div class="card" style="margin-bottom:1rem"><span class="tag">Nenhuma fonte de dados conectada</span><p>Esta versão não busca empresas automaticamente e não inventa dados. Pesquise por conta própria, cadastre as empresas encontradas e/ou importe uma lista CSV que você tenha autorização para usar (colunas: nome, segmento, contato, cidade, site). Não envie mensagens em massa: respeite o consentimento dos contatos.</p>
+<div class="tools" style="margin:1rem 0 0"><input id="q1" placeholder="Segmento (ex.: dentista)"><input id="q2" placeholder="Cidade e estado"><button class="btn" id="mp" type="button">Pesquisar no Google Maps</button></div></div>
+<form class="card fg" id="cf" autocomplete="off">
+<label>Empresa<input id="c1" required></label><label>Segmento<input id="c2"></label><label>Contato comercial (telefone ou e-mail)<input id="c3"></label><label>Cidade<input id="c4"></label><label>Site (se houver)<input id="c5" placeholder="empresa.com.br"></label><label>Valor estimado (R$)<input id="c6" type="number" min="0" step="50"></label><label>Próxima ação<input id="c7"></label><label>Observações<input id="c8"></label>
+<div class="w2" style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center"><button class="btn pri" id="cb">Adicionar às oportunidades</button><label class="btn" style="cursor:pointer;display:inline-flex">Importar CSV<input id="imp" type="file" accept=".csv,text/csv" hidden></label><span class="st" id="cst" role="status"></span></div></form>
+<div class="stats" id="stats"></div>
+<div class="tools"><input id="q" placeholder="Buscar por nome, segmento ou cidade"><select id="fs"><option value="">Todos os status</option></select><select id="fw"><option value="">Com e sem site</option><option value="com">Com site informado</option><option value="sem">Sem site informado</option></select></div>
+<div class="kb" id="kb"></div>
+</div></section>
+
+<section id="projetos" style="padding-top:0"><div class="wrap rv">
+  <h2>Meus projetos</h2><p class="lead">Projetos salvos neste navegador. Não há conta nem sincronização.</p>
+  <div class="plist" id="pl"></div>
+</div></section>
+
+<section id="planos" style="padding-top:0"><div class="wrap rv">
+  <h2>Planos</h2><p class="lead">Cobrança e assinaturas ainda não foram implementadas. Nesta versão tudo é gratuito.</p>
+  <div class="cards">
+    <div class="card"><span class="tag">Disponível</span><h3>Gratuito</h3><p>Gerar prévias, salvar no navegador e baixar o HTML.</p></div>
+    <div class="card"><span class="tag">Em breve</span><h3>Profissional</h3><p>Pensado para freelancers com vários projetos.</p></div>
+    <div class="card"><span class="tag">Em breve</span><h3>Agência</h3><p>Pensado para equipes e entregas em volume.</p></div>
+  </div>
+</div></section>
+</main>
+<footer><div class="wrap">SiteAI, projeto de demonstração. Contas, pagamentos e publicação online automática ainda não estão implementados.</div></footer>
+
+<dialog id="cfm"><form method="dialog"><p id="cm"></p><div style="display:flex;gap:.6rem"><button class="btn" value="n">Cancelar</button><button class="btn pri" value="y">Excluir</button></div></form></dialog>
+<dialog id="dlg"><h3>Contas em breve</h3><p style="color:var(--mut)">Login, cadastro e banco de dados em nuvem ainda não estão implementados. Você já pode criar, editar, salvar neste navegador e baixar sites sem conta.</p><button class="btn pri" id="ok">Entendi</button></dialog>
+
+<script>
+const $=s=>document.querySelector(s),esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let cur=null;
+/* menu, login, entrada suave */
+$("#mb").onclick=()=>{const o=$("#nav").classList.toggle("open");$("#mb").setAttribute("aria-expanded",o)};
+$("#nav").onclick=e=>{if(e.target.tagName==="A")$("#nav").classList.remove("open")};
+document.querySelectorAll("[data-auth]").forEach(b=>b.onclick=()=>$("#dlg").showModal());
+$("#ok").onclick=()=>$("#dlg").close();
+const io="IntersectionObserver"in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1}):null;
+document.querySelectorAll(".rv").forEach(el=>io?io.observe(el):el.classList.add("in"));
+$("#go").onclick=()=>{const v=$("#idea").value.trim();if(v&&!$("#desc").value)$("#desc").value=v;location.hash="#criar";setTimeout(()=>$("#nome").focus({preventScroll:true}),500)};
+
+/* leitura do formulário */
+function readForm(){const g=i=>$("#"+i).value.trim();return{nome:g("nome"),segmento:g("seg"),descricao:g("desc"),cor:$("#cor").value,tema:$("#tema").value,estilo:$("#estilo").value,servicos:g("serv").split("\n").map(s=>s.trim()).filter(Boolean),telefone:g("tel"),whatsapp:g("wa"),endereco:g("end"),redes:g("redes"),objetivo:$("#obj").value}}
+
+/* texto sem IA, usado se a IA não estiver disponível */
+function fallbackCopy(d){const sv=d.servicos.length?d.servicos:["Atendimento personalizado","Consultoria","Orçamento sem compromisso"];
+return{faq:[{q:"Como posso entrar em contato?",a:"Pelo WhatsApp, telefone ou endereço informados na seção de contato."}],reviews:[],imgs:[],heroTitle:d.nome+(d.segmento?": "+d.segmento:""),heroSub:d.descricao||"Conheça nossos serviços e fale com a gente.",cta:"Falar no WhatsApp",about:d.descricao||"Conheça mais sobre o nosso trabalho e como podemos ajudar você.",services:sv.map(n=>({name:n,desc:""})),perks:[{title:"Atendimento próximo",text:"Fale direto com a equipe."},{title:"Clareza",text:"Informações objetivas sobre cada serviço."},{title:"Fácil de contatar",text:"Contato rápido pelos canais abaixo."}]}}
+
+async function aiCopy(d){
+  const sample=window.claude?.use?await claude.use("sample"):null;if(!sample)return null;
+  const p="Você escreve textos para sites de pequenas empresas, em português do Brasil. Responda SOMENTE com JSON válido, sem markdown, com as chaves: heroTitle (até 9 palavras), heroSub (1 a 2 frases), cta (2 a 4 palavras), about (2 a 3 frases), services (array de {name, desc} com uma desc curta para cada serviço informado, ou 3 a 4 sugeridos se nenhum foi informado), perks (array de 3 {title, text} com diferenciais genéricos), faq (array de 3 {q, a} com perguntas comuns e respostas genéricas que não afirmem preços, prazos, garantias ou políticas). Não invente prêmios, números, anos de experiência, depoimentos, certificações ou preços. Tom de acordo com o estilo pedido. Dados: "+JSON.stringify(d);
+  const r=await sample.json(p);return r&&typeof r==="object"&&r.heroTitle&&Array.isArray(r.services)?r:null}
+
+/* monta o HTML final do site gerado */
+function buildSite(d,c){
+  const dk=d.tema==="dark",bg=dk?"#0b0b0f":"#ffffff",tx=dk?"#f3f3f6":"#15151a",cd=dk?"#15151c":"#f4f4f7",mu=dk?"#a3a3b5":"#5b5b6b",ln=dk?"#262633":"#e3e3ea";
+  const st={Moderno:["system-ui,-apple-system,Segoe UI,sans-serif","16px","700"],Elegante:["Georgia,'Times New Roman',serif","4px","600"],Minimalista:["system-ui,-apple-system,Segoe UI,sans-serif","0","500"],Ousado:["Impact,'Arial Black',system-ui,sans-serif","24px","800"]}[d.estilo]||[];
+  const dg=(d.whatsapp||"").replace(/\D/g,""),num=dg&&dg.length<=11?"55"+dg:dg;
+  const wa=num?"https://wa.me/"+num+"?text="+encodeURIComponent("Olá! Vim pelo site da "+d.nome+".") :"";
+  const tl=(d.telefone||"").replace(/[^\d+]/g,"");
+  const li=(c.services||[]).map(s=>`<div class="c"><h3>${esc(s.name)}</h3>${s.desc?`<p>${esc(s.desc)}</p>`:""}</div>`).join("");
+  const pk=(c.perks||[]).map(s=>`<div class="c"><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></div>`).join("");
+  const fq=(c.faq||[]).map(f=>`<details class="c"><summary>${esc(f.q)}</summary><p style="margin-top:.5rem">${esc(f.a)}</p></details>`).join("");
+  const rv=(c.reviews||[]).map(r=>`<div class="c"><p>“${esc(r.text)}”</p><p><b>${esc(r.who)}</b></p></div>`).join("");
+  const gl=(c.imgs||[]).map(u=>`<img src="${esc(u)}" alt="" loading="lazy">`).join("");
+  const fm=num?`<form class="c fm" onsubmit="event.preventDefault();var f=this;window.open('https://wa.me/${num}?text='+encodeURIComponent('Olá, sou '+f.n.value+'. '+f.m.value))"><h3>Envie uma mensagem</h3><input name="n" placeholder="Seu nome" required><textarea name="m" placeholder="Sua mensagem" rows="3" required></textarea><button class="btn" type="submit">Enviar pelo WhatsApp</button></form>`:"";
+  const ct=[d.endereco&&`<p><b>Endereço</b><br>${esc(d.endereco)}</p>`,d.telefone&&`<p><b>Telefone</b><br><a href="tel:${esc(tl)}">${esc(d.telefone)}</a></p>`,d.whatsapp&&`<p><b>WhatsApp</b><br><a href="${esc(wa)}">${esc(d.whatsapp)}</a></p>`,d.redes&&`<p><b>Redes sociais</b><br>${esc(d.redes)}</p>`].filter(Boolean).join("")||"<p>Adicione seus contatos no formulário.</p>";
+  return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(d.nome)}</title><meta name="description" content="${esc(c.heroSub)}"><style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:${bg};color:${tx};font:400 1rem/1.65 system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2,h3{font-family:${st[0]};font-weight:${st[2]};line-height:1.15;margin:0 0 .6rem}a{color:inherit}.w{width:min(1040px,100% - 2rem);margin:auto}
+header{position:sticky;top:0;background:${bg};border-bottom:1px solid ${ln};z-index:5}.b{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:62px;flex-wrap:wrap}
+.b strong{font:${st[2]} 1.2rem ${st[0]}}nav{display:flex;gap:1.1rem;flex-wrap:wrap}nav a{text-decoration:none;color:${mu};font-size:.93rem}
+.btn{display:inline-block;padding:.8rem 1.4rem;background:${d.cor};color:#fff;border-radius:${st[1]};text-decoration:none;font-weight:700}
+section{padding:4rem 0}.hero{padding:5rem 0;background:linear-gradient(135deg,${d.cor}33,transparent 60%)}.hero h1{font-size:clamp(2.2rem,6vw,3.8rem);max-width:18ch}.hero p{color:${mu};max-width:52ch;font-size:1.1rem;margin:0 0 1.6rem}
+h2{font-size:clamp(1.6rem,4vw,2.3rem)}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.4rem}.c{background:${cd};border:1px solid ${ln};border-radius:${st[1]};padding:1.3rem}.c p{margin:0;color:${mu};font-size:.95rem}
+.ab{color:${mu};max-width:64ch}footer{border-top:1px solid ${ln};padding:1.5rem 0;color:${mu};font-size:.88rem}
+.g img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:${st[1]}}summary{cursor:pointer;font-weight:700}.fm{display:grid;gap:.6rem}.fm input,.fm textarea{padding:.7rem;border:1px solid ${ln};border-radius:${st[1]};background:${bg};color:${tx};font:inherit}button.btn{border:0;cursor:pointer;font:inherit;font-weight:700}
+.fw{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;color:#fff;text-decoration:none;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+</style></head><body>
+<header><div class="w b"><strong>${esc(d.nome)}</strong><nav><a href="#inicio">Início</a><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#contato">Contato</a></nav></div></header>
+<section class="hero" id="inicio"><div class="w"><h1>${esc(c.heroTitle)}</h1><p>${esc(c.heroSub)}</p><a class="btn" href="${wa?esc(wa):"#contato"}">${esc(c.cta||"Fale conosco")}</a></div></section>
+<section id="sobre"><div class="w"><h2>Quem somos</h2><p class="ab">${esc(c.about)}</p></div></section>
+<section id="servicos" style="background:${cd}33"><div class="w"><h2>Serviços</h2><div class="g">${li}</div></div></section>
+<section><div class="w"><h2>Por que nos escolher</h2><div class="g">${pk}</div></div></section>
+${gl?`<section><div class="w"><h2>Galeria</h2><div class="g">${gl}</div></div></section>`:""}
+${rv?`<section style="background:${cd}33"><div class="w"><h2>Depoimentos</h2><div class="g">${rv}</div></div></section>`:""}
+${fq?`<section><div class="w"><h2>Perguntas frequentes</h2><div class="g" style="grid-template-columns:1fr">${fq}</div></div></section>`:""}
+<section id="contato"><div class="w"><h2>Contato</h2><div class="g">${ct}${fm}</div></div></section>
+<footer><div class="w">© ${esc(d.nome)}. Todos os direitos reservados.</div></footer>
+${wa?`<a class="fw" href="${esc(wa)}" aria-label="Falar no WhatsApp">WA</a>`:""}
+</body></html>`}
+
+/* gerar */
+$("#gen").onclick=async()=>{
+  const d=readForm();if(!d.nome){$("#st").textContent="Informe o nome da empresa.";$("#nome").focus();return}
+  const b=$("#gen");b.disabled=true;$("#st").textContent="A IA está criando seu site...";
+  let c=null,ia=false;
+  try{c=await aiCopy(d);ia=!!c}catch(e){c=null}
+  if(!c)c=fallbackCopy(d);
+  c.faq=c.faq||[];c.reviews=[];c.imgs=[];cur={d,c};fillEd();show();$("#save").disabled=false;
+  $("#st").textContent=ia?"Pronto! Textos criados pela IA. Revise antes de usar.":"Pronto! A IA não respondeu, então usei textos básicos a partir dos seus dados.";
+  b.disabled=false};
+
+/* salvar e listar projetos (localStorage, só neste navegador) */
+const KEY="siteai_projetos";
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}};
+const store=a=>{try{localStorage.setItem(KEY,JSON.stringify(a));return true}catch(e){return false}};
+function list(){const a=load();$("#pl").innerHTML=a.length?a.map(p=>`<div class="prow"><div><b>${esc(p.nome)}</b><br><span class="st">${esc(p.data)}</span></div><div style="display:flex;gap:.5rem"><button class="btn" data-o="${esc(p.id)}">Abrir</button><button class="btn" data-x="${esc(p.id)}">Excluir</button></div></div>`).join(""):'<div class="card"><p>Nenhum projeto salvo ainda.</p></div>'}
+$("#save").onclick=()=>{if(!cur)return;const a=load();a.unshift({id:String(Date.now()),nome:cur.d.nome,data:new Date().toLocaleString("pt-BR"),html:cur.html,d:cur.d,c:cur.c});
+  $("#st").textContent=store(a.slice(0,20))?"Projeto salvo em Meus projetos.":"Não foi possível salvar neste navegador.";list()};
+$("#pl").onclick=e=>{const o=e.target.dataset.o,x=e.target.dataset.x,a=load();
+  if(o){const p=a.find(i=>i.id===o);if(p){cur=p.c?{d:p.d,c:p.c}:{d:{nome:p.nome},html:p.html};if(p.c){fillEd();show()}else{$("#fr").srcdoc=p.html;$("#fr").hidden=false;$("#empty").hidden=true;$("#dl").disabled=false;$("#editor").hidden=true}$("#save").disabled=false;location.hash="#criar"}}
+  if(x){store(a.filter(i=>i.id!==x));list()}};
+
+/* baixar */
+$("#dl").onclick=async()=>{if(!cur)return;
+  try{const dl=window.claude?.use?await claude.use("downloads"):null;
+    if(dl){await dl.save({filename:"index.html",data:cur.html});$("#st").textContent="Arquivo index.html pronto.";return}
+    await navigator.clipboard.writeText(cur.html);$("#st").textContent="Download indisponível aqui. O código HTML foi copiado: cole em um arquivo index.html."}
+  catch(e){$("#st").textContent="Não foi possível baixar agora."}};
+/* modelos */
+const TPL=[["Barbearia","#c9a227","dark","Elegante","Corte clássico|Degradê|Barba na navalha|Corte + barba","Barbearia com atendimento por hora marcada e foco no acabamento."],
+["Restaurante","#e4572e","dark","Moderno","Cardápio|Reservas|Eventos|Delivery","Restaurante com cozinha autoral e ambiente acolhedor."],
+["Oficina mecânica","#f59e0b","dark","Ousado","Revisão|Freios e suspensão|Troca de óleo|Diagnóstico","Oficina mecânica com orçamento claro antes do serviço."],
+["Clínica","#12907e","light","Moderno","Clínica geral|Exames|Consultas|Retornos","Clínica com atendimento por hora marcada e equipe multidisciplinar."],
+["Academia","#ef4444","dark","Ousado","Musculação|Aulas coletivas|Avaliação física|Treino personalizado","Academia com estrutura completa e acompanhamento de instrutores."],
+["Imobiliária","#2563eb","light","Elegante","Venda|Aluguel|Avaliação de imóveis|Administração","Imobiliária que acompanha cada etapa da compra, venda e locação."],
+["Advogados","#8a6d3b","light","Elegante","Direito civil|Direito trabalhista|Direito de família|Consultoria","Escritório de advocacia com atendimento ético e individual."],
+["Dentista","#06b6d4","light","Minimalista","Limpeza|Clareamento|Ortodontia|Avaliação","Consultório odontológico com atendimento cuidadoso."],
+["Loja virtual","#8b5cf6","light","Moderno","Catálogo de produtos|Atendimento no WhatsApp|Entrega|Trocas","Loja com vitrine de produtos e atendimento direto pelo WhatsApp."],
+["Prestador de serviços","#3b82f6","light","Minimalista","Orçamento|Instalação|Manutenção|Atendimento a domicílio","Profissional autônomo com atendimento rápido na região."],
+["Salão de beleza","#ec4899","light","Elegante","Corte|Coloração|Escova|Manicure","Salão com profissionais atenciosos e ambiente confortável."],
+["Empresa de tecnologia","#6366f1","dark","Moderno","Desenvolvimento de software|Suporte técnico|Consultoria|Automação","Empresa de tecnologia que resolve problemas de negócio com software."]];
+$("#tpl").innerHTML=TPL.map((t,i)=>`<div class="mock" style="--c:linear-gradient(120deg,${t[1]},#0b0b0f)"><div class="tb"><i></i><i></i><i></i></div><div class="scr"><b></b><s></s><s></s><div><u></u><u></u><u></u></div></div><p>${esc(t[0])}<button class="btn" data-t="${i}">Usar este modelo</button></p></div>`).join("");
+$("#tpl").onclick=e=>{const i=e.target.dataset.t;if(i==null)return;const t=TPL[i];
+  $("#seg").value=t[0].toLowerCase();$("#cor").value=t[1];$("#tema").value=t[2];$("#estilo").value=t[3];$("#serv").value=t[4].split("|").join("\n");$("#desc").value=t[5];
+  location.hash="#criar";$("#st").textContent="Modelo aplicado. Informe o nome da empresa e gere o site.";setTimeout(()=>$("#nome").focus({preventScroll:true}),500)};
+
+/* prévia desktop/mobile e editor */
+const dev=m=>{$("#fr").classList.toggle("m",m);$("#vm").classList.toggle("on",m);$("#vd").classList.toggle("on",!m)};
+$("#vd").onclick=()=>dev(false);$("#vm").onclick=()=>dev(true);
+function show(){cur.html=buildSite(cur.d,cur.c);$("#fr").srcdoc=cur.html;$("#fr").hidden=false;$("#empty").hidden=true;$("#dl").disabled=false}
+function fillEd(){const c=cur.c;$("#editor").hidden=false;$("#e1").value=c.heroTitle||"";$("#e2").value=c.heroSub||"";$("#e3").value=c.cta||"";$("#e4").value=c.about||"";$("#e5").value=cur.d.cor;$("#e6").value=cur.d.estilo;$("#e7").value=(c.faq||[]).map(f=>f.q+" | "+f.a).join("\n");$("#e8").value=(c.reviews||[]).map(f=>f.text+" | "+f.who).join("\n")}
+const pairs=v=>v.split("\n").map(l=>l.split("|").map(x=>x.trim())).filter(x=>x[0]&&x[1]);
+$("#editor").oninput=e=>{if(!cur||!cur.c||e.target.type==="file")return;const c=cur.c;c.heroTitle=$("#e1").value;c.heroSub=$("#e2").value;c.cta=$("#e3").value;c.about=$("#e4").value;cur.d.cor=$("#e5").value;cur.d.estilo=$("#e6").value;c.faq=pairs($("#e7").value).map(x=>({q:x[0],a:x[1]}));c.reviews=pairs($("#e8").value).map(x=>({text:x[0],who:x[1]}));clearTimeout(window._t);window._t=setTimeout(show,250)};
+const shrink=f=>new Promise((ok,no)=>{const u=URL.createObjectURL(f),i=new Image();i.onload=()=>{const k=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*k;c.height=i.height*k;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL("image/jpeg",.8))};i.onerror=no;i.src=u});
+$("#e9").onchange=async e=>{if(!cur||!cur.c)return;const o=[];for(const f of [...e.target.files].slice(0,6)){try{o.push(await shrink(f))}catch(_){}}cur.c.imgs=(cur.c.imgs||[]).concat(o).slice(0,6);e.target.value="";show();$("#st").textContent=o.length+" imagem(ns) adicionada(s) à galeria."};
+$("#e10").onclick=()=>{if(cur&&cur.c){cur.c.imgs=[];show()}};
+
+/* CRM (dados só neste navegador) */
+const CK="siteai_crm",ST=["Novo","Contatado","Em negociação","Fechado","Perdido"];let editId=null;
+$("#fs").innerHTML+=ST.map(x=>`<option>${x}</option>`).join("");
+const cl=()=>{try{return JSON.parse(localStorage.getItem(CK)||"[]")}catch(e){return[]}};
+const cs=a=>{try{localStorage.setItem(CK,JSON.stringify(a))}catch(e){$("#cst").textContent="Não foi possível salvar neste navegador."}};
+const brl=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const url=v=>{v=String(v||"").trim();return !v?"":/^https?:\/\//i.test(v)?v:"https://"+v};
+const lk=v=>{v=String(v||"").trim();if(!v)return"";if(v.includes("@"))return"mailto:"+v;const d=v.replace(/\D/g,"");return d.length>=8?"tel:"+d:""};
+const oc=o=>{const k=lk(o.contato);return`<div class="opp"><b>${esc(o.nome)}</b><small>${esc(o.seg)}${o.seg&&o.cidade?" · ":""}${esc(o.cidade)}</small>${o.valor?`<span>${brl(o.valor)}</span>`:""}${o.prox?`<span>Próxima ação: ${esc(o.prox)}</span>`:""}${o.obs?`<small>${esc(o.obs)}</small>`:""}<small>Descoberta em ${esc(o.data)}</small><select data-s="${esc(o.id)}" aria-label="Status">${ST.map(x=>`<option${x===o.status?" selected":""}>${x}</option>`).join("")}</select><div class="acts">${o.site?`<a class="btn" href="${esc(o.site)}" target="_blank" rel="noopener">Site</a>`:""}${k?`<a class="btn" href="${esc(k)}">Contato</a>`:""}<button class="btn" data-c="${esc(o.id)}">Copiar</button><button class="btn" data-e="${esc(o.id)}">Editar</button><button class="btn" data-d="${esc(o.id)}">Excluir</button></div></div>`};
+function crm(){const a=cl(),q=$("#q").value.toLowerCase(),fs=$("#fs").value,fw=$("#fw").value;
+  const f=a.filter(o=>(!q||(o.nome+" "+o.seg+" "+o.cidade).toLowerCase().includes(q))&&(!fs||o.status===fs)&&(fw==="com"?!!o.site:fw==="sem"?!o.site:true));
+  const fe=a.filter(o=>o.status==="Fechado");
+  $("#stats").innerHTML=[["Oportunidades",a.length],["Contatos realizados",a.filter(o=>o.status!=="Novo").length],["Em negociação",a.filter(o=>o.status==="Em negociação").length],["Vendas fechadas",fe.length],["Valor fechado",brl(fe.reduce((t,o)=>t+Number(o.valor||0),0))]].map(x=>`<div class="card"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+  $("#kb").innerHTML=ST.map(x=>{const g=f.filter(o=>o.status===x);return`<div class="col"><h4>${x} (${g.length})</h4>${g.map(oc).join("")}</div>`}).join("")}
+["q","fs","fw"].forEach(i=>$("#"+i).oninput=crm);
+$("#cf").onsubmit=e=>{e.preventDefault();const g=i=>$("#"+i).value.trim(),a=cl();
+  const o={nome:g("c1"),seg:g("c2"),contato:g("c3"),cidade:g("c4"),site:url(g("c5")),valor:g("c6"),prox:g("c7"),obs:g("c8")};
+  if(editId){const i=a.findIndex(x=>x.id===editId);if(i>=0)Object.assign(a[i],o)}else a.unshift({id:String(Date.now()),data:new Date().toLocaleDateString("pt-BR"),status:"Novo",...o});
+  cs(a);editId=null;$("#cf").reset();$("#cb").textContent="Adicionar às oportunidades";$("#cst").textContent="Salvo.";crm()};
+$("#kb").onchange=e=>{const id=e.target.dataset.s;if(!id)return;const a=cl(),o=a.find(x=>x.id===id);if(o){o.status=e.target.value;cs(a);crm()}};
+const ask=m=>new Promise(r=>{const d=$("#cfm");$("#cm").textContent=m;d.returnValue="n";d.onclose=()=>r(d.returnValue==="y");d.showModal()});
+$("#kb").onclick=async e=>{const t=e.target.dataset,a=cl();
+  if(t.c){const o=a.find(x=>x.id===t.c);if(o){const tx=[o.nome,o.seg,o.cidade,o.site,o.contato].filter(Boolean).join(" | ");try{await navigator.clipboard.writeText(tx);$("#cst").textContent="Informações copiadas."}catch(_){$("#cst").textContent="Não foi possível copiar aqui."}}}
+  if(t.e){const o=a.find(x=>x.id===t.e);if(o){editId=o.id;[["c1","nome"],["c2","seg"],["c3","contato"],["c4","cidade"],["c5","site"],["c6","valor"],["c7","prox"],["c8","obs"]].forEach(k=>$("#"+k[0]).value=o[k[1]]||"");$("#cb").textContent="Salvar alterações";$("#c1").focus()}}
+  if(t.d&&await ask("Excluir esta oportunidade? Essa ação não pode ser desfeita.")){cs(a.filter(x=>x.id!==t.d));crm()}};
+$("#mp").onclick=()=>{const q=[$("#q1").value,$("#q2").value].join(" ").trim();if(q)window.open("https://www.google.com/maps/search/"+encodeURIComponent(q),"_blank","noopener")};
+$("#imp").onchange=async e=>{const f=e.target.files[0];if(!f)return;const L=(await f.text()).split(/\r?\n/).filter(l=>l.trim()),sp=l=>l.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(x=>x.trim().replace(/^"|"$/g,""));
+  const h=sp(L.shift()||"").map(x=>x.toLowerCase()),ix=n=>h.findIndex(x=>n.includes(x));const c={nome:ix(["nome","empresa"]),seg:ix(["segmento","categoria"]),contato:ix(["contato","telefone","email"]),cidade:ix(["cidade"]),site:ix(["site"])};
+  if(c.nome<0){$("#cst").textContent="CSV sem coluna “nome”.";return}
+  const a=cl(),d=new Date().toLocaleDateString("pt-BR");let n=0;L.slice(0,500).forEach((l,i)=>{const r=sp(l),g=k=>c[k]>=0?r[c[k]]||"":"";if(!g("nome"))return;a.unshift({id:Date.now()+"-"+i,data:d,status:"Novo",nome:g("nome"),seg:g("seg"),contato:g("contato"),cidade:g("cidade"),site:url(g("site")),valor:"",prox:"",obs:""});n++});
+  cs(a);e.target.value="";$("#cst").textContent=n+" empresa(s) importada(s).";crm()};
+crm();
+list();
+</script>
+</body>
+</html>
